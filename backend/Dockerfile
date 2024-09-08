@@ -1,5 +1,5 @@
 # Stage 1: Build the NestJS application
-FROM node:16-alpine AS build
+FROM node:20-alpine AS build
 
 # Set the working directory
 WORKDIR /app
@@ -7,7 +7,8 @@ WORKDIR /app
 # Copy the package.json and yarn.lock files
 COPY package.json yarn.lock ./
 
-# Install dependencies
+# Clean the node_modules directory and install dependencies
+RUN rm -rf node_modules
 RUN yarn install --frozen-lockfile
 
 # Copy the rest of the application code
@@ -17,7 +18,7 @@ COPY . .
 RUN yarn build
 
 # Stage 2: Run the NestJS application
-FROM node:16-alpine
+FROM node:20-alpine
 
 # Set the working directory
 WORKDIR /app
